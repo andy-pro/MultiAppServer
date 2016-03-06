@@ -16,20 +16,16 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs"),
     qs = require("querystring"),
+    cfg = require("./config.json"),
     root = process.cwd(),
     count = 0, // requests count
-    
-    /* = customize below as you want = */
-    port = process.argv[2] || 3000,
     mime = { 
-      // add your own mime types for responseFile
+      /* add your own mime types for responseFile */
       '.html': 'text/html; charset=UTF-8',
       '.txt': 'text/plain',
       '.jpeg': 'image/jpeg',
       '.jpg': 'image/jpeg'
-    },
-    __api = 'api', // directory: contains controllers for big projects or 'index.js' for tiny projects
-    __CTRL = false; // tiny/mega
+    };
     /* end vars */
 
 /* like lodash.merge or util._extend
@@ -59,24 +55,22 @@ function _extendObj(orig, add) {
   parts = req.path.split(path.sep);
   req.application = parts[1];
   req.ajax = _req.headers['x-requested-with'] === 'XMLHttpRequest';
-  req.apidir = __api;
+  req.apidir = cfg.api;
   req.method = _req.method;
-  if (parts[2] === __api && !req.ajax) {
+  if (parts[2] === cfg.api && !req.ajax) {
     idx++;
     req.api = true;
   }
-  if (__CTRL) {
+  if (cfg.mega) {
     req.controller = parts[idx];
     idx++;
   }
   req.function = parts[idx];
   req.args = parts.slice(idx+1) || [];
   
-  req.cwd = process.cwd();
-  req.approot = path.join(req.cwd, req.application);
-  req.abs = path.join(req.cwd, req.path); // absolute filename
-  
-  // console.log(req);
+  req.cwd = root;
+  req.approot = path.join(root, req.application);
+  req.abs = path.join(root, req.path); // absolute filename
   
   /* if _CTRL is true (for mega projects): e.g. http://localhost:3000/app1/controller1/function1/arg0/arg1?var1=value1&var2=value2
   { application: 'app1', controller: 'controller1', function: 'function1', args: [ 'arg0', 'arg1' ],
@@ -93,7 +87,6 @@ http.createServer(function(request, response) {
   
   function responseIndex(p) {
     req.ext = '.html';
-    // p = path.join(p + '/index' + req.ext;
     p = path.join(p, 'index'+req.ext);
     console.log('\033[1;44mResponse index:\033[0m', p);
     return responseFile(p);
@@ -134,7 +127,7 @@ http.createServer(function(request, response) {
   var postData = "",
       req = urlparse(request); // custom request
 
-  req.orig = request; // original request
+  if (cfg.orig) req.orig = request; // original request
 
   request.addListener("data", function(chunk) {
     postData += chunk;
@@ -154,7 +147,7 @@ http.createServer(function(request, response) {
          }); 
         } else {
           if (req.ajax || req.api) {
-            var ctrl = require('./' + path.join(req.application, req.apidir, (__CTRL ? req.controller : ''))),
+            var ctrl = require('./' + path.join(req.application, req.apidir, (cfg.mega ? req.controller : ''))),
                 f = ctrl[req.function];
             if (typeof f === 'function') f(req, responseObj);
             else throw('bad function');          
@@ -169,6 +162,6 @@ http.createServer(function(request, response) {
     
   });
  
-}).listen(parseInt(port, 10));
+}).listen(parseInt(cfg.port, 10));
 
-console.log("server running at\n  => http://localhost:" + port + "/\nCTRL + C to shutdown");
+console.log("server running at\n  => http://localhost:" + cfg.port + "/\nCTRL + C to shutdown");

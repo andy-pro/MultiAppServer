@@ -17,9 +17,14 @@
 - No special dependencies  
 
 ***
+#### config.json parameters
+```
+port - desired port
+api - directory: contains controllers for mega projects or 'index.js' for tiny projects
+mega - false/true: tiny/mega model
+```
 #### Request structure
-for tiny projects:
-*_CTRL = false*
+for tiny model:
 ```
 http://localhost:3000/app1/function1/arg0/arg1?var1=value1&var2=value2
 application: 'app1'
@@ -28,8 +33,7 @@ args: [ 'arg0', 'arg1' ]
 query: 'var1=value1&var2=value2'
 vars: {var1: 'value1', var2: 'value2'}
 ```
-for mega projects:
-*_CTRL = true*
+for mega model:
 ```
 http://localhost:3000/app1/controller1/function1/arg0/arg1?var1=value1&var2=value2
 application: 'app1'
