@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="AndyPro">
+  </head>
+
+  <body>
+    Try api:
+    <ul>
+      <li><a href="/app1/api/ctrl1/date">controllerl/date</a></li>
+      <li><a href="/app1/api/ctrl1/time">controllerl/time</a></li>
+      <li><a href="/app1/api/ctrl2/directory/client/project">controller2/directory/client/project</a></li>
+      <li><a href="/app1/api/ctrl2/file?ext=jpg&name=next">controller2/file?ext=jpg&name=next</a></li>
+      <li><a href="/app1/api/ctrl1/request">Dive into Request</a></li>
+    </ul>
+
+    Try ajax:
+    <form>
+    <label for="req">Request:</label><br><input id="req" value="word WORLD"/><br>
+    <label for="res">Response:</label><br><textarea id="res" rows="10" cols="30"></textarea><br>
+    <br>
+    <input x-data-ctrl="ctrl1" x-data-act="upperize" type="button" value="toUpper (controller1)"/><br>
+    <br>
+    <input x-data-ctrl="ctrl2" x-data-act="lowerize" type="button" value="toLower (controller2)"/><br>
+    </form>
+    
+    <script src="/../static/js/jquery.min.js"></script>
+    
+    <script>
+    
+      $(function () {
+      
+        document.title = '(; Multi App Server - Mega Projects ;)';
+        
+        var req = $('#req'),
+            res = $('#res');
+            
+        $('input[type=button]').click(function() {
+          
+          var
+          /* beginning was the word */
+              word = req.val(),
+          /* then there was an element */
+              el = $(this),              
+          /* then was governor */
+              ctrl = el.attr('x-data-ctrl'),
+          /* then it was action */
+              action = el.attr('x-data-act');
+                            
+          /* Ajax will save the world */
+          $.get(`app1/${ctrl}/${action}`, {word: word})
+            .always( (data, status) => {
+              if (status === 'success') res.val(res.val() + word + ' => ' + data.value + '\n');
+              console.log(data, status);
+            });
+          
+        });
+        
+      });
+      
+    </script>
+
+  </body>
+</html>

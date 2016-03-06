@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-language" content="ru" />
+    <meta http-equiv="Content-Type" content="txt/html; charset=utf-8" />
+    <title>Калькулятор</title>
+    <link rel="stylesheet" type="text/css" href="/../calc/css/calculator.css">
+    <link rel="shortcut icon" href="/../calc/calculator.png" type="image/ico">
+  </head>
+<body class="light">
+  <center>
+    <div id="help-pad" align="left"></div>
+    <div id="calc-pad">    
+      <div id="calc-memo"><textarea id="memo" rows="10" cols="23"></textarea></div>
+      <table  class="btns">
+        <tr>
+          <td>
+            <button class="dr">7</button>   <!-- "dr" -  html to face -->
+            <button class="dr">8</button>
+            <button class="dr">9</button>
+            <button class="op shl" tag="/">÷</button>   <!-- "op" - tag to face; shl - shift left -->
+          </td>
+          <td><button class="clr">C</button></td> <!-- "clr" - clear content -->
+        </tr>
+        <tr>
+          <td>        
+            <button class="dr">4</button>
+            <button class="dr">5</button>
+            <button class="dr">6</button>
+            <button class="op shl" tag="*">×</button>
+          </td>
+          <td><button class="del">←</button></td> <!-- "del" - delete last symbol -->
+        </tr>
+        <tr>
+          <td>         
+            <button class="dr">1</button>
+            <button class="dr">2</button>
+            <button class="dr">3</button>
+            <button class="op shl" tag="-">–</button>
+          </td>
+          <td rowspan='3'><button class="equ">=</button></td> <!-- "equ" - send AJAX to calculate -->                        
+        </tr>
+        <tr>
+          <td>        
+            <button class="dr">0</button>
+            <button class="dr">√</button>
+            <button class="dr">.</button>
+            <button class="op shl" tag="+">+</button>
+          </td>
+        </tr>
+        <tr>
+          <td>        
+            <button class="dr">(</button>
+            <button class="dr">)</button>
+            <button class="crsl"><</button>
+            <button class="crsr shl" tag="+">></button></button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input id="status" value="" type="text"> 
+            <button id="theme" class="extra">Theme</button>
+          </td>
+          <td><button id="help" class="extra">Help</button></td>
+        </tr>
+      </table>
+    </div>
+  </center>
+  
+  <script src="/../static/js/jquery.min.js"></script>
+  <script src="/../static/js/jquery.caret.js"></script>
+  <script src="/../static/js/markdown.min.js"></script>
+  <script src="/../calc/js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+ 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Backbone.js Web App</title>
+        <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../contacts/css/screen.css" />
+    </head>
+    <body style="background: url('../static/css/bg.png'); padding: 20px;">
+        <div id="contacts">
+            </p>
+            <header class="well col-md-12">              
+              <div  class="col-md-3">
+                <div id="filter"><label>Long live & green wave Backbone! Show me:</label></div>
+              </div>
+            </header>
+            <p>
+            <!--
+            <div class="row">
+            <div class="col-md-5">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">Add Contact</h3>
+              </div>
+              <div class="panel-body">
+                <form id="addContact" action="#">
+                    <label for="photo">photo:</label><input id="photo" type="file" />
+                    <label for="type">Type:</label><input id="type" />
+                    <label for="name">Name:</label><input id="name" />
+                    <label for="address">Address:</label><input id="address" />
+                    <label for="tel">Tel:</label><input id="tel" />
+                    <label for="email">Email:</label><input id="email" />
+                    <button id="add">Add</button>
+                </form>
+              </div>
+            </div>
+            </div>
+            </div>
+            -->
+
+        </div>
+        
+        <script id="contactTemplate" type="text/html">        
+            <img src="<%= photo %>" alt="<%= name %>" />
+            <h1><%= name %><span><%= type %></span></h1>
+            <div><%= address %></div>
+            <dl>
+                <dt>Tel:</dt><dd><%= tel %></dd>
+                <dt>Email:</dt><dd><a href="mailto:<%= email %>"><%= email %></a></dd>
+            </dl>
+        </script>
+        
+        <script src="../static/js/jquery.min.js"></script>
+        <script src="../static/js/Underscore.min.js"></script>
+        <script src="../static/js/Backbone.min.js"></script>
+        <script src="../contacts/js/app.js"></script>
+    </body>
+</html>

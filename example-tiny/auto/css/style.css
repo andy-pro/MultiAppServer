@@ -1,0 +1,25 @@
+﻿body {
+  background: url('pane.png');
+  padding: 20px; 
+}
+
+#carousel{
+    display: none;
+    overflow: hidden;
+    border: 10px solid silver;
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.2);
+}
+
+.king-time{
+    margin-top: 20px;
+    font-size: 44px;
+    font-weight: bold;
+    color: #676;
+    width: 50%; 
+    height: 96px;
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.2);
+}
+
+.slide {
+  float: left;
+}

@@ -1,0 +1,117 @@
+#calc-pad { 
+    border-radius: 10px; 
+    padding: 20px; 
+    width: 722px; 
+    border-right: 1px solid rgba(0, 0, 0, 0.1); 
+    border-width: 0px 1px 1px; 
+    border-style: solid; 
+}
+#calc-memo{
+    margin: 2px 20px 0px 0px;
+    padding: 2px;
+    float: left;
+    width: 348px;
+}
+
+.btns button {
+    font-size: 19pt; 
+    width: 60px; 
+    height: 40px; 
+    margin: 2px; 
+    border-radius: 4px; 
+    border-style: solid; 
+    border-width: 1px; 
+    font-family: arial,verdana; 
+    cursor: pointer; 
+    font-weight: bold; 
+}
+
+.btns .shl { margin-left: 5px; }
+.btns .equ { height: 140px; font-size: 24pt; }
+.btns .extra { font-size: 10pt; }
+
+#memo {
+    resize: none;
+    font-size: 17pt;
+    padding: 8px;
+}
+
+input, textarea {
+    border-radius: 5px; 
+    border: 1px solid silver;
+    font-family: courier; 
+}
+
+input::-moz-selection, textarea::-moz-selection { background: none repeat scroll 0px 0px #69c; color: white; }
+
+#status {
+    font-size: 12pt; 
+    margin: 0px 5px 0px 3px;
+    width: 185px;
+    height: 30px;
+    padding: 4px;
+    color: #555;
+}
+
+#help-pad{
+    display: none;
+    background: #ffd;
+/*     margin-top: -20px;
+    margin-left: 15%;
+    margin-right: 15%; */
+    width: 70%; 
+    padding: 20px;
+    height: 600px;
+    overflow: auto;
+    /* position: absolute; */
+    /* z-index: 99; */
+    border: 1px solid silver;
+    border-width: 0 1px 1px 1px;
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    /* cursor: pointer; */
+}
+
+/* light theme */
+/*--------------------------------------------------------------------*/
+.light button{
+    background: linear-gradient(to bottom, white 0%, #eee 100%) repeat scroll 0% 0% transparent; 
+    border-color: #c0c0c0 #7491a5  #7491a5 #c0c0c0; 
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.05); 
+    text-shadow: 1px 1px 0px white;
+    color: #444; 
+}
+
+.light #calc-pad{
+    color: black; 
+    background: -moz-linear-gradient(center top, #f2f2f2 4%, #ebebeb 15%, #e6e6e6 77%, #e0e0e0 100%) repeat scroll 0% 0% transparent; 
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 7px 7px 10px rgba(0,0,0,0.8);
+}
+
+body {
+  background: #eaeaea url('bg.png');
+  padding-top: 50px;
+}
+
+body.light {background-color: #e3e3e3;}
+
+/* dark theme */
+/*--------------------------------------------------------------------*/
+.dark button{
+    background: linear-gradient(to bottom, black 0%, #333 100%) repeat scroll 0% 0% transparent; 
+    border-color: #3f3f3f #8b6e5a  #8b6e5a #3f3f3f; 
+    box-shadow: 1px 1px 0px rgba(255, 255, 255, 0.05); 
+    text-shadow: 1px 1px 0px black; 
+    color: #bbb; 
+}
+
+.dark #calc-pad{
+    color: black; 
+    background: -moz-linear-gradient(center top, #111 4%, #181818 15%, #222 77%, #333 100%) repeat scroll 0% 0% transparent; 
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 7px 7px 10px rgba(255, 255, 255, 0.8);
+}
+
+body.dark {background-color: #1c1c1c;}
+/*--------------------------------------------------------------------*/
