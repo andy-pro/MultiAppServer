@@ -1,7 +1,9 @@
 #Multi App Server for Node.js
-***
+
 [![Node.js](https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg)](https://nodejs.org)
+
 ***
+
 ###Features
 - Single Page Applications Design
 - Static server
@@ -12,7 +14,8 @@
 - Arguments to array parsing
 - Variables & POST-data to object parsing
 - Fully asynchronous
-- No special dependencies
+- No special dependencies  
+
 ***
 #### Request structure
 for tiny projects:
