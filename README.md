@@ -8,11 +8,13 @@
 - Single Page Applications Design
 - Static server
 - Common resources
-- 'index.html' provider for all HTTP-requests
+- 'index.html' provider for all '/path/'-like HTTP-requests
 - RPC (Remote Procedure Call), API provider for HTTP-requests
-- API provider for ajax requests
+- API provider for AJAX requests
+- Escaped JSON provider for API & AJAX
 - Arguments to array parsing
 - Variables & POST-data to object parsing
+- Access restriction
 - Fully asynchronous
 - No special dependencies  
 
@@ -21,7 +23,10 @@
 ```
 port - desired port
 api - directory: contains controllers for mega projects or 'index.js' for tiny projects
-mega - false/true: tiny/mega model
+mega - false/true: tiny/mega model, 'tiny' default
+orig - false/true, merge original request to custom
+server-static - static files folder for server, default is 'static'
+app-static - static files folder for applications, default is 'static'
 ```
 #### Request structure
 for tiny model:
@@ -57,10 +62,9 @@ app *Calculator* require [mathjs]
 app1
   api
     index.js
-  css
-    style.css
-  js
-    app.js
+  static
+    css
+    js
   index.html
 app2
   ***

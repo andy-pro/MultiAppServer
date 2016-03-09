@@ -88,7 +88,7 @@ api = { // controllers for ajax or api requests
     var projects = [];
     init(req.args[0]);
     if (!id || id >= cat_cnt) {
-      return response();  
+      return res([]);  
     }
     
     function getProject(image, client, prj) {

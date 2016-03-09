@@ -5,19 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="AndyPro">
+    <style>
+      body {
+        background: none repeat scroll 0 0 #333;
+        color: #fff;
+        font-family: "Lucida Grande","Lucida Sans Unicode",Arial,sans-serif;
+      }
+      a {
+        text-decoration: none;
+        color: orange;
+      }
+    </style>    
   </head>
 
   <body>
-    Try api:
+  <center>
+    <h3>Try api:</h3>
     <ul>
-      <li><a href="/app1/api/ctrl1/date">controllerl/date</a></li>
-      <li><a href="/app1/api/ctrl1/time">controllerl/time</a></li>
+      <li><a href="/app1/api/ctrl1/date">controller1/date</a></li>
+      <li><a href="/app1/api/ctrl1/time">controller1/time</a></li>
       <li><a href="/app1/api/ctrl2/directory/client/project">controller2/directory/client/project</a></li>
       <li><a href="/app1/api/ctrl2/file?ext=jpg&name=next">controller2/file?ext=jpg&name=next</a></li>
       <li><a href="/app1/api/ctrl1/request">Dive into Request</a></li>
+      <li><a href="/app1/static/ctrl1.for-demo-only.js">Dive into Controller 1</a></li>
+      <li><a href="/app1/static/ctrl2.for-demo-only.js">Dive into Controller 2</a></li>
     </ul>
 
-    Try ajax:
+    <h3>Try ajax:</h3>
     <form>
     <label for="req">Request:</label><br><input id="req" value="word WORLD"/><br>
     <label for="res">Response:</label><br><textarea id="res" rows="10" cols="30"></textarea><br>
@@ -26,6 +40,7 @@
     <br>
     <input x-data-ctrl="ctrl2" x-data-act="lowerize" type="button" value="toLower (controller2)"/><br>
     </form>
+  </center>
     
     <script src="/../static/js/jquery.min.js"></script>
     
@@ -37,6 +52,8 @@
         
         var req = $('#req'),
             res = $('#res');
+        
+        $('form').submit(function() { return false } );
             
         $('input[type=button]').click(function() {
           
@@ -51,7 +68,7 @@
               action = el.attr('x-data-act');
                             
           /* Ajax will save the world */
-          $.get(`app1/${ctrl}/${action}`, {word: word})
+          $.get(`/app1/${ctrl}/${action}`, {word: word})
             .always( (data, status) => {
               if (status === 'success') res.val(res.val() + word + ' => ' + data.value + '\n');
               console.log(data, status);

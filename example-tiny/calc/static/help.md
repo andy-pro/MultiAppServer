@@ -17,7 +17,7 @@ based on **Math.js** library
 * Is easily extensible.
 * Open source.
 
->*for more information visit* [mathjs] *website*
+>*for more information visit* [mathjs] *website*  
 >*visit* [mathnotepad] *website also*
 
 ***

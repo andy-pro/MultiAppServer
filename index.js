@@ -1,13 +1,18 @@
 /*
-  # Multi app server
+  # Multi App Server
   #
   # Single Page Applications Design
   # Static server
-  # 'index.html' provider for all HTTP-requests
+  # Common resources
+  # 'index.html' provider for all '/path/'-like HTTP-requests
   # RPC (Remote Procedure Call), API provider for HTTP-requests
-  # API provider for ajax requests
-  # fully asynchronous
-  # no special dependencies
+  # API provider for AJAX requests
+  # Arguments to array parsing
+  # Variables & POST-data to object parsing
+  # Escaped JSON provider for API & AJAX
+  # Access restriction
+  # Fully asynchronous
+  # No special dependencies
   #
   # andy-pro 2016
 */
@@ -17,6 +22,9 @@ var http = require("http"),
     fs = require("fs"),
     qs = require("querystring"),
     cfg = require("./config.json"),
+    server_static = cfg['server-static'] || 'static',
+    app_static = cfg['app-static'] || 'static',
+    port = process.argv[2] || cfg.port,
     root = process.cwd(),
     count = 0, // requests count
     mime = { 
@@ -27,63 +35,71 @@ var http = require("http"),
       '.jpg': 'image/jpeg'
     };
     /* end vars */
-
-/* like lodash.merge or util._extend
-   new keys to orig add */
-function _extendObj(orig, add) {
-  if (add && typeof add === 'object') {
-    var keys = Object.keys(add);
-    var i = keys.length;
-    while (i--) orig[keys[i]] = add[keys[i]];
-  }
-};
-
- function urlparse(_req) {
-  var _url = _req.url,
-      uurl = qs.unescape(path.normalize(_url)),
-      parts = uurl.split('?'),
-      /* e.g. parts[0] = '/static/images/logo.jpg', after parse:
-      { root:'\\', dir: '\\static\\images', base: 'logo.jpg', ext: '.jpg', name: 'logo' } */
-      req = path.parse(parts[0]),
-      idx = 2;
-  req.url = _url; // original url
-  req.uurl = uurl; // unescaped url
-  req.uri = decodeURI(_url);
-  req.path = parts[0];
-  req.query = (parts.length > 1) ? parts[1] : '';
-  req.vars = qs.parse(req.query);
-  parts = req.path.split(path.sep);
-  req.application = parts[1];
-  req.ajax = _req.headers['x-requested-with'] === 'XMLHttpRequest';
-  req.apidir = cfg.api;
-  req.method = _req.method;
-  if (parts[2] === cfg.api && !req.ajax) {
-    idx++;
-    req.api = true;
-  }
-  if (cfg.mega) {
-    req.controller = parts[idx];
-    idx++;
-  }
-  req.function = parts[idx];
-  req.args = parts.slice(idx+1) || [];
-  
-  req.cwd = root;
-  req.approot = path.join(root, req.application);
-  req.abs = path.join(root, req.path); // absolute filename
-  
-  /* if _CTRL is true (for mega projects): e.g. http://localhost:3000/app1/controller1/function1/arg0/arg1?var1=value1&var2=value2
-  { application: 'app1', controller: 'controller1', function: 'function1', args: [ 'arg0', 'arg1' ],
-    query: 'var1=value1&var2=value2', vars: { var1: 'value1', var2: 'value2' } }
-    
-  if _CTRL is false (for tiny projects): e.g. http://localhost:3000/app1/function1/arg0/arg1?var1=value1&var2=value2
-  { application: 'app1', function: 'function1', args: [ 'arg0', 'arg1' ],
-    query: 'var1=value1&var2=value2', vars: { var1: 'value1', var2: 'value2' } } */ 
-    
-  return req;
-}
     
 http.createServer(function(request, response) {
+  
+  function detachQs(str) {
+    var pos = str.indexOf('?');
+    return (pos >=0 ) ? [str.substr(0, pos), str.substr(pos + 1)] : [str, ''];
+  }
+  
+  /* like lodash.merge or util._extend
+     new keys to orig add */
+  function extendObj(orig, add) {
+    if (add && typeof add === 'object') {
+      var keys = Object.keys(add);
+      var i = keys.length;
+      while (i--) orig[keys[i]] = add[keys[i]];
+    }
+  };
+
+  function createCustomRequest(_req) {
+    var _url = _req.url,
+        uurl = qs.unescape(path.normalize(_url)),
+        parts = detachQs(uurl),
+        /* e.g. parts[0] = '/static/images/logo.jpg', after parse:
+        { root:'\\', dir: '\\static\\images', base: 'logo.jpg', ext: '.jpg', name: 'logo' } */
+        req = path.parse(parts[0]),
+        idx = 2;
+    req.url = _url; // original url
+    req.uurl = uurl; // unescaped url
+    req.uri = decodeURI(_url);
+    req.path = parts[0];
+    req.query = parts[1];
+    req.vars = qs.parse(req.query);
+    parts = req.path.split(path.sep);
+    req.application = parts[1];
+    req.ajax = _req.headers['x-requested-with'] === 'XMLHttpRequest';
+    req.apidir = cfg.api;
+    req.method = _req.method;
+    if (parts[2] === cfg.api && !req.ajax) {
+      idx++;
+      req.api = true;
+    }
+    if (cfg.mega) {
+      req.controller = parts[idx];
+      idx++;
+    }
+    req.port = port;
+    req.function = parts[idx];
+    req.args = parts.slice(idx+1) || [];
+    
+    req.cwd = root;
+    req.approot = path.join(root, req.application);
+    req.abs = path.join(root, req.path); // absolute filename
+    
+    if (cfg.orig) req.orig = _req; // original request
+    
+    /* if _CTRL is true (for mega projects): e.g. http://localhost:3000/app1/controller1/function1/arg0/arg1?var1=value1&var2=value2
+    { application: 'app1', controller: 'controller1', function: 'function1', args: [ 'arg0', 'arg1' ],
+      query: 'var1=value1&var2=value2', vars: { var1: 'value1', var2: 'value2' } }
+      
+    if _CTRL is false (for tiny projects): e.g. http://localhost:3000/app1/function1/arg0/arg1?var1=value1&var2=value2
+    { application: 'app1', function: 'function1', args: [ 'arg0', 'arg1' ],
+      query: 'var1=value1&var2=value2', vars: { var1: 'value1', var2: 'value2' } } */ 
+      
+    return req;
+  }
   
   function responseIndex(p) {
     req.ext = '.html';
@@ -124,10 +140,9 @@ http.createServer(function(request, response) {
 
   request.setEncoding("utf8");
   
-  var postData = "",
-      req = urlparse(request); // custom request
-
-  if (cfg.orig) req.orig = request; // original request
+  var postData = "", 
+      foo,
+      req = createCustomRequest(request);
 
   request.addListener("data", function(chunk) {
     postData += chunk;
@@ -135,26 +150,30 @@ http.createServer(function(request, response) {
 
   request.addListener("end", function() {
 
-    if (postData) _extendObj(req.vars, qs.parse(postData)); // add post data to vars object
+    if (postData) extendObj(req.vars, qs.parse(postData)); // add post data to vars object
     
-    fs.exists(req.abs, function(exists) {    
-      try {      
-        if (exists) {        
-          fs.stat(req.abs, function(err, stats) {
-            if (err) throw(err);
+    // console.log('\033[1;47mRequest:\033[0m', req);
+    
+    fs.exists(req.abs, function(exists) {
+      if (exists) {        
+        fs.stat(req.abs, function(err, stats) {
+          if (err) responseErr(500, err);
+          else {
             if (stats.isDirectory()) responseIndex(req.abs); // send 'index.html' in current dir
-            else responseFile(req.abs); // static file
-         }); 
-        } else {
-          if (req.ajax || req.api) {
-            var ctrl = require('./' + path.join(req.application, req.apidir, (cfg.mega ? req.controller : ''))),
-                f = ctrl[req.function];
-            if (typeof f === 'function') f(req, responseObj);
-            else throw('bad function');          
-          } else (req.ext) ? responseErr(404) : responseIndex(req.application);
-        }
-      } catch (err) {          
-        responseErr(500, err);
+            else {
+               // response files from 'static' directories or 'html' from anywere
+               foo = cfg.mega ? req.controller : req.function;
+              if (req.application === server_static || foo === app_static || req.ext === '.html') responseFile(req.abs);
+              else responseErr(500, 'access denied');
+            }
+          }
+       }); 
+      } else {
+        if (req.ajax || req.api) {
+          foo = require('./' + path.join(req.application, req.apidir, (cfg.mega ? req.controller : '')))[req.function];
+          if (typeof foo === 'function') foo(req, responseObj);
+          else responseErr(500, 'bad function');          
+        } else (req.ext) ? responseErr(404) : responseIndex(req.application);
       }    
     }); 
 
@@ -162,6 +181,6 @@ http.createServer(function(request, response) {
     
   });
  
-}).listen(parseInt(cfg.port, 10));
+}).listen(parseInt(port, 10));
 
-console.log("server running at\n  => http://localhost:" + cfg.port + "/\nCTRL + C to shutdown");
+console.log("server running at\n  => http://localhost:" + port + "/\nCTRL + C to shutdown");

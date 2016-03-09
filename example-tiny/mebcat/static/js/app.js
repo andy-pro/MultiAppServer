@@ -30,10 +30,15 @@ $(function () {
         var r = {};
         [ ['', 'main'], 
           ['/', 'main'],
+          ['/index', 'main'],
+          ['/index.html', 'main'],
           ['/projects/:client/:project', 'showProject'], 
           ['/category/:cat', 'showCategory']
         ].forEach(function(i) { r[root+i[0]] = i[1]; });        
         this.router = new Router({routes: r});
+        
+        // this.router.on("route", function(route, params) { });
+        
         // views hash
         this.views = {
           main: new MainView(),
@@ -61,6 +66,11 @@ $(function () {
                 
     //=================================================
     var Router = Backbone.Router.extend({
+      
+      // execute: function(callback, args) {
+        // args.push(parseQueryString(args.pop()));
+        // if (callback) callback.apply(this, args);
+      // },
       
       main: function() {
         // console.log('route is main');
@@ -123,7 +133,7 @@ $(function () {
         // console.log(this);
           html += app.template({
             ahref: `/${app.root}/projects/${item.client}/${item.project}`,
-            ihref: `/../${app.root}/images/${item.thumb}`,
+            ihref: `/../${app.root}/static/img/${item.thumb}`,
             hint: item.client,
             title: `${title} ${i+1}`
           });
@@ -145,7 +155,7 @@ $(function () {
         app.cats.forEach(function(cat, i) {
           self.html += app.template({
             ahref: cat[0],
-            ihref: `../${app.root}/images/0${i+1}.jpg`,
+            ihref: `../${app.root}/static/img/0${i+1}.jpg`,
             hint: cat[1],
             title: cat[1]
           });

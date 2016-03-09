@@ -24,7 +24,7 @@ $(function () {
             expr = lines[idx];
         if (isNaN(expr)) {
         
-          $.post('calc/calculate', {expr: expr}).always(function(data, status, _x) {
+          $.post('/calc/calculate', {expr: expr}).always(function(data, status, _x) {
       	    if (status=='success') {
               var result = data.result;
               if (isNaN(result)) { 
@@ -82,7 +82,7 @@ $(function () {
         hide = 'fadeOut';
         show = 'fadeIn';
       }
-      var dfr = $.get('calc/help.md');
+      var dfr = $.get('/calc/static/help.md');
       cp[hide](speed, function() {
         dfr.always(function(data) {
           hm.html(markdown.toHTML(data));

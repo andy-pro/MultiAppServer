@@ -24,7 +24,7 @@
     
     var Contact = Backbone.Model.extend({
         defaults: {
-            photo: "contacts/images/placeholder.png",
+            photo: "/contacts/static/img/placeholder.png",
             name: "",
             address: "",
             tel: "",

@@ -25,7 +25,7 @@ $(function () {
       this.table = this.el.children();
       this.row = this.table.children();      
       this.onload = opts.onload;
-      $.get('auto/imagelist', {href: opts.picdir}).always(function(data) {
+      $.get(opts.url, {href: opts.picdir}).always(function(data) {
         data.pics.forEach(function(fn) {
           var dfr = $.Deferred(),
               pic = $('<img>', {src: (opts.picdir + fn)}).on('load', function() {
@@ -110,7 +110,7 @@ $(function () {
     }
     // if (false)
     setInterval(function() {
-      $.get('auto/time').always(function(data) {
+      $.get('/auto/time').always(function(data) {
         TS.html(data.time);
         period &= 7;
         if (!period++) Carousel.slide();
@@ -123,7 +123,8 @@ $(function () {
       period = 1;      
       
   Carousel.load({
-    picdir: '/../auto/images/slide/',
+    picdir: '/../auto/static/img/slide/',
+    url: '/auto/imagelist',
     el: '#carousel',
     onload: appStart
   });

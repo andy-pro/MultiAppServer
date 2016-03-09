@@ -1,6 +1,5 @@
 ﻿{
   "port": 3001,
   "api": "api",
-  "mega": true,
-  "orig": false
+  "mega": true
 }
